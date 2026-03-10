@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>♞ Шахматный клуб | Рейтинги</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Telegram Web App SDK -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Шапка с рейтингом -->
+        <header class="header">
+            <div class="user-info" id="userInfo">
+                <span class="user-avatar" id="userAvatar">♟️</span>
+                <div class="user-details">
+                    <span class="user-name" id="userName">Гость</span>
+                    <span class="user-rating" id="userRating">Рейтинг: 1200</span>
+                </div>
+            </div>
+            <h1 class="main-title">Шахматная академия</h1>
+        </header>
+
+        <!-- Навигационные вкладки -->
+        <nav class="tabs">
+            <button class="tab-btn active" data-tab="services">Услуги</button>
+            <button class="tab-btn" data-tab="tournaments">Турниры</button>
+            <button class="tab-btn" data-tab="ratings">Рейтинги</button>
+            <button class="tab-btn" data-tab="profile">Профиль</button>
+        </nav>
+
+        <!-- Контент вкладок -->
+        <main class="content">
+            <!-- Вкладка Услуги (без изменений) -->
+            <section id="services" class="tab-content active">
+                <h2>Наши услуги</h2>
+                <div class="services-grid" id="servicesList"></div>
+            </section>
+
+            <!-- Вкладка Турниры (с рейтинговыми категориями) -->
+            <section id="tournaments" class="tab-content">
+                <h2>Ближайшие турниры</h2>
+                
+                <!-- Фильтр по рейтингу -->
+                <div class="rating-filter">
+                    <select id="ratingFilter" class="rating-select">
+                        <option value="all">Все турниры</option>
+                        <option value="beginner">Для начинающих (до 1200)</option>
+                        <option value="intermediate">Средний уровень (1200-1600)</option>
+                        <option value="advanced">Продвинутый (1600-2000)</option>
+                        <option value="pro">Профи (2000+)</option>
+                    </select>
+                </div>
+                
+                <div class="tournaments-list" id="tournamentsList"></div>
+                
+                <div class="registration-section" id="registrationSection" style="display: none;">
+                    <h3>Запись на турнир</h3>
+                    <form id="tournamentForm">
+                        <input type="hidden" id="selectedTournamentId">
+                        <div class="form-group">
+                            <label for="playerName">Ваше имя:</label>
+                            <input type="text" id="playerName" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="playerRating">Ваш текущий рейтинг:</label>
+                            <input type="number" id="playerCurrentRating" min="0" max="3000" value="1200">
+                        </div>
+                        <div class="form-group">
+                            <label for="playerComment">Комментарий:</label>
+                            <textarea id="playerComment" rows="2"></textarea>
+                        </div>
+                        <button type="submit" class="submit-btn">Записаться</button>
+                    </form>
+                </div>
+            </section>
+
+            <!-- Новая вкладка Рейтинги -->
+            <section id="ratings" class="tab-content">
+                <h2>Рейтинговая система</h2>
+                
+                <!-- Таблица лидеров -->
+                <div class="leaderboard-section">
+                    <h3>🏆 Топ игроков</h3>
+                    <div class="leaderboard-table" id="leaderboardList"></div>
+                </div>
+                
+                <!-- Рейтинговые категории -->
+                <div class="rating-categories">
+                    <div class="rating-category beginner">
+                        <span class="category-title">Начинающие</span>
+                        <span class="category-range">до 1200</span>
+                    </div>
+                    <div class="rating-category intermediate">
+                        <span class="category-title">Любители</span>
+                        <span class="category-range">1200-1600</span>
+                    </div>
+                    <div class="rating-category advanced">
+                        <span class="category-title">Кандидаты</span>
+                        <span class="category-range">1600-2000</span>
+                    </div>
+                    <div class="rating-category pro">
+                        <span class="category-title">Мастера</span>
+                        <span class="category-range">2000+</span>
+                    </div>
+                </div>
+                
+                <!-- Рейтинговые турниры -->
+                <div class="rating-tournaments">
+                    <h3>Рейтинговые турниры</h3>
+                    <div id="ratingTournamentsList"></div>
+                </div>
+            </section>
+
+            <!-- Вкладка Профиль (расширенная) -->
+            <section id="profile" class="tab-content">
+                <h2>Мой профиль</h2>
+                
+                <div class="profile-card">
+                    <div class="profile-avatar">♟️</div>
+                    <div class="profile-main-info">
+                        <h3 id="profileName">Игрок</h3>
+                        <div class="profile-rating-display">
+                            <span class="rating-label">Текущий рейтинг:</span>
+                            <span class="rating-value" id="profileRating">1200</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="profile-stats-grid">
+                    <div class="stat-box">
+                        <span class="stat-number" id="statTournaments">0</span>
+                        <span class="stat-label">Турниров</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number" id="statWins">0</span>
+                        <span class="stat-label">Побед</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number" id="statRating">1200</span>
+                        <span class="stat-label">Рейтинг</span>
+                    </div>
+                    <div class="stat-box">
+                        <span class="stat-number" id="statPlace">-</span>
+                        <span class="stat-label">Место</span>
+                    </div>
+                </div>
+                
+                <div class="rating-history">
+                    <h3>📈 История рейтинга</h3>
+                    <div class="history-list" id="ratingHistory"></div>
+                </div>
+                
+                <div class="my-tournaments">
+                    <h3>Мои турниры</h3>
+                    <div id="myTournamentsList">
+                        <p class="empty-list">Вы еще не участвовали в турнирах</p>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <!-- Уведомления -->
+        <div id="notification" class="notification"></div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
