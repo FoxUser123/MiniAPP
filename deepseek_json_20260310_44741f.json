@@ -1,0 +1,16 @@
+{
+    "name": "Шахматный клуб",
+    "short_name": "Chess Club",
+    "description": "Запись на курсы и турниры по шахматам",
+    "start_url": "/",
+    "display": "standalone",
+    "background_color": "#f5f5f5",
+    "theme_color": "#40a7e3",
+    "icons": [
+        {
+            "src": "icon-192.png",
+            "sizes": "192x192",
+            "type": "image/png"
+        }
+    ]
+}
